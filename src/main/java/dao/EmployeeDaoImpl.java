@@ -39,9 +39,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public Employee foundById(int id) {
-
-        Employee employee = new Employee(resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("gender"), resultSet.getInt("age"), cityDao.foundCityById(resultSet.getLong("city_id")));
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(
+           try (PreparedStatement statement = connection.getConnection().prepareStatement(
 
                 "SELECT * FROM employee WHERE id=(?)")) {
             statement.setInt(1, id);
@@ -93,9 +91,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
             statement.setInt(5, age);
             statement.setLong(6, city_id);
             statement.executeUpdate();
-
         }
-
     }
 
     @Override
@@ -104,11 +100,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 ("delete from employee where id=(?)")) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }

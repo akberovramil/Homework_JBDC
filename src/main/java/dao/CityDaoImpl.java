@@ -53,9 +53,6 @@ public class CityDaoImpl implements CityDao {
             preparedStatement.setLong(2, id);
             preparedStatement.executeUpdate();
         }
-
-
-
     }
 
     @Override
