@@ -10,6 +10,9 @@ public class City {
         this.city_name = city_name;
     }
 
+    public City() {
+    }
+
     public String getCity_name() {
         return city_name;
     }

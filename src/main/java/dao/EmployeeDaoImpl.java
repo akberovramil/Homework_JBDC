@@ -40,7 +40,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public Employee foundById(int id) {
 
-        Employee employee = new Employee();
+        Employee employee = new Employee(resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("gender"), resultSet.getInt("age"), cityDao.foundCityById(resultSet.getLong("city_id")));
         try (PreparedStatement statement = connection.getConnection().prepareStatement(
 
                 "SELECT * FROM employee WHERE id=(?)")) {

@@ -11,7 +11,9 @@ public class CityDaoImpl implements CityDao {
     Connection connection = new Connection();
 
     @Override
-    public Long foundCityById(Long id) throws SQLException {
+    public City foundCityById(Long id) throws SQLException {
+
+        City city = new City();
 
         try (PreparedStatement preparedStatement =
                      connection.getConnection().prepareStatement
@@ -20,9 +22,15 @@ public class CityDaoImpl implements CityDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
-            resultSet.next();
-            return new City(resultSet.getString("name"));
+            while (resultSet.next()) {
+                city.setCity_name(resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return city;
+
+
     }
 
     @Override

@@ -11,7 +11,7 @@ public class Employee {
   private int age;
   private City city;
 
-    public Employee() {
+    public Employee(String firstName, String lastName, String gender, int age, City cityId) {
     }
 
 
