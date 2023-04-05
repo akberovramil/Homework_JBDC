@@ -1,6 +1,7 @@
 package connection;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Connection {
@@ -10,11 +11,12 @@ public class Connection {
         final String password = "ugvbfp8d";
         final String URL = "jdbc:postgresql://localhost:5432/skyproram";
 
-        try {
-            return DriverManager.getConnection(URL,user,password);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return DriverManager.getConnection(URL,user,password);
 
+
+    }
+
+    public PreparedStatement getPreparedStatement (String sql) throws SQLException {
+        return getConnection().prepareStatement(sql);
     }
 }

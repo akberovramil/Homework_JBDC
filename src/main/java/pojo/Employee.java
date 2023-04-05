@@ -1,22 +1,40 @@
 package pojo;
 
+import javax.persistence.*;
 import java.util.Objects;
 
-public class Employee {
 
+@Entity
+@Table(name = "employee")
+
+public class Employee {
+    @Id
   private Long id;
+
+    @Column(name = "first_name")
   private String first_name;
+
+    @Column(name = "last_name")
   private String last_name;
+    @Column(name = "gender")
   private String gender;
+
+    @Column(name = "age")
   private int age;
-  private City city;
+
+
+    @JoinColumn(referencedColumnName = "id")
+  private int city;
+
+    public Employee() {
+    }
 
     public Employee(String firstName, String lastName, String gender, int age, City cityId) {
     }
 
 
 
-    public Employee(Long id, String first_name, String last_name, String gender, int age, City city) {
+    public Employee(Long id, String first_name, String last_name, String gender, int age, int city) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -73,11 +91,11 @@ public class Employee {
         this.age = age;
     }
 
-    public City getCity() {
+    public int getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(int city) {
         this.city = city;
     }
 
