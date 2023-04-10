@@ -1,6 +1,7 @@
 package dao;
 import connection.Connection;
 import connection.HibernateSessionFactoryUtil;
+import exceptions.EmptyListException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pojo.Employee;
@@ -27,34 +28,31 @@ public class EmployeeDaoImpl implements EmployeeDao {
             Transaction transaction = session.beginTransaction();
             id = (Long) session.save(employee);
             transaction.commit();
-
         }
-
-
-
     }
 
     @Override
-    public Employee foundById(int id) {
+    public Employee foundById(Long id) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()){
             return session.get(Employee.class, id);
         }
-
-
-
     }
 
     @Override
     public List<Employee> showAll() {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()){
-            return session.createQuery("FROM Employee").list();
+        List<Employee> employeeList =  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("FROM Employee").list();
+        if (employeeList.isEmpty()) {
+            throw new EmptyListException("Список сотрудников пуст");
+        } else {
+            return employeeList;
         }
+
 
 
     }
 
     @Override
-    public void updateEmployeeById(Employee employee) throws SQLException {
+    public void updateEmployee(Employee employee) throws SQLException {
 
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
@@ -64,10 +62,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public void deleteEmployeeById(Employee employee) {
+    public void deleteEmployee(Employee employee) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.update(employee);
+            session.delete(employee);
             transaction.commit();
         }
     }

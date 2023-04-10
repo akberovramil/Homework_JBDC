@@ -1,6 +1,7 @@
 package pojo;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -25,6 +26,9 @@ public class Employee {
 
     @JoinColumn(referencedColumnName = "id")
   private int city;
+
+    @OneToMany(mappedBy = "city",cascade = CascadeType.ALL)
+    private List<Employee> employeeList;
 
     public Employee() {
     }
@@ -97,6 +101,14 @@ public class Employee {
 
     public void setCity(int city) {
         this.city = city;
+    }
+
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 
     @Override

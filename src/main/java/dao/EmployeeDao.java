@@ -9,13 +9,13 @@ public interface EmployeeDao {
 
     void create(Employee employee);
 
-    Employee foundById(int id);
+    Employee foundById(Long id);
 
     List<Employee> showAll();
 
-    void updateEmployeeById(Employee employee) throws SQLException;
+    void updateEmployee(Employee employee) throws SQLException;
 
-    void deleteEmployeeById(Employee employee);
+    void deleteEmployee(Employee employee);
 
 
 }
