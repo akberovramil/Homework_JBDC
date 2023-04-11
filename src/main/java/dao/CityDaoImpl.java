@@ -30,7 +30,7 @@ public class CityDaoImpl implements CityDao {
        Long id;
 
        try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-           Transaction transaction = session.getTransaction();
+           Transaction transaction = session.beginTransaction();
            session.save(city);
            transaction.commit();
        }
