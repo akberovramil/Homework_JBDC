@@ -8,9 +8,9 @@ public interface CityDao {
 
     City foundCityById(Long id) throws SQLException;
 
-    void addCity(String name) throws SQLException;
+    void addCity(City city) throws SQLException;
 
-    void updateCityById(Long id, String name) throws SQLException;
+    void updateCity(City city) throws SQLException;
 
-    void deleteCityById(Long id) throws SQLException;
+    void deleteCity(City city) throws SQLException;
 }

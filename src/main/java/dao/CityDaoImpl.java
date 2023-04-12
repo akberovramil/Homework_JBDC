@@ -1,6 +1,10 @@
 package dao;
 
 import connection.Connection;
+import connection.HibernateSessionFactoryUtil;
+import exceptions.NotFoundObjectException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pojo.City;
 
 import java.sql.PreparedStatement;
@@ -12,56 +16,40 @@ public class CityDaoImpl implements CityDao {
 
     @Override
     public City foundCityById(Long id) throws SQLException {
-
-        City city = new City();
-
-        try (PreparedStatement preparedStatement =
-                     connection.getConnection().prepareStatement
-                             ("SELECT * FROM city WHERE id = (?)")) {
-
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.getResultSet();
-            while (resultSet.next()) {
-                city.setCity_name(resultSet.getString("name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return city;
-
-
-    }
-
-    @Override
-    public void addCity(String name) throws SQLException {
-        try (PreparedStatement preparedStatement =
-                     connection.getConnection().prepareStatement
-                             ("INSERT INTO  city (name) values (?)")) {
-            preparedStatement.setString(1, name);
-            preparedStatement.executeUpdate();
+        City city =  HibernateSessionFactoryUtil.getSessionFactory().openSession().get(City.class, id);
+        if (city == null) {
+            throw new NotFoundObjectException("Данного города нет в базе данных");
+        } else {
+            return city;
         }
 
     }
 
     @Override
-    public void updateCityById(Long id, String name) throws SQLException {
-        try (PreparedStatement preparedStatement =
-                     connection.getConnection().prepareStatement
-                             ("UPDATE city SET name=? WHERE id=(?)")) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setLong(2, id);
-            preparedStatement.executeUpdate();
+    public void addCity(City city) throws SQLException {
+       Long id;
+
+       try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+           Transaction transaction = session.beginTransaction();
+           session.save(city);
+           transaction.commit();
+       }
+    }
+
+    @Override
+    public void updateCity(City city) throws SQLException {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(city);
+            transaction.commit();
         }
     }
 
     @Override
-    public void deleteCityById(Long id) throws SQLException {
-        try (PreparedStatement preparedStatement =
-             connection.getConnection().prepareStatement
-                             ("DELETE FROM city WHERE id =(?)")) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
+    public void deleteCity(City city) throws SQLException {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.delete(city);
         }
 
     }
